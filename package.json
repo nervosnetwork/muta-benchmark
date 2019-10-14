@@ -1,0 +1,21 @@
+{
+  "name": "benchmark-muta",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autocannon": "^4.1.1",
+    "commander": "^3.0.2",
+    "inquirer": "^7.0.0",
+    "keccak": "^2.0.0",
+    "random-bigint": "0.0.1",
+    "rlp": "^2.2.3",
+    "secp256k1": "^3.7.1"
+  }
+}
