@@ -1,14 +1,16 @@
 const random = require("random-bigint");
 const autocannon = require("autocannon");
+const axios = require("axios");
 const sign = require("./sign");
 
-const privateKey = Buffer.from("67df77adbc271f558df88504cf3a3f87bfdd2d55b11e86c55c4fd978a935a836", "hex");
+const privateKey = Buffer.from("45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f", "hex");
 const chainId = "0xb6a4d7da21443f5e816e8700eea87610e6d769657d6b8ec73028457bf2ca4036";
-const feeAssetId = "0x20360d5c4c9b85b25af54cde365861d463484a9e59759093370a2d2463ad5a53";
-const carryingAssetId = "0x20360d5c4c9b85b25af54cde365860d463484a9e59759093370a2d2463ad5a53";
-const receiver = "0x10360d5c4c9b85b25af54cde365860d463484a9e45";
+const feeAssetId = "0xfee0decb4f6a76d402f200b5642a9236ba455c22aa80ef82d69fc70ea5ba20b5";
+const carryingAssetId = "0xfee0decb4f6a76d402f200b5642a9236ba455c22aa80ef82d69fc70ea5ba20b5";
+const receiver = "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4";
 
 let errorCount = 0;
+let timeout = "0xffff";
 
 function getBody() {
   return JSON.stringify({
@@ -20,20 +22,24 @@ function getBody() {
         feeCycle: "0xff",
         receiver,
         nonce: "0x" + random(128).toString(16).padStart(64, "0"),
-        timeout: "0x8888",
-        carryingAmount: "0xff"
+        timeout,
+        carryingAmount: "0x01"
       },
       privateKey
     )
   });
 }
 
-function bench(options) {
+async function bench(options) {
+  const { gap, url } = options;
+  const res = await axios.post(url, `{"query":"query { getLatestEpoch { header { epochId } } }"}`);
+  const height = Number("0x" + res.data.data.getLatestEpoch.header.epochId);
+  timeout = "0x" + Number(height + Number(gap) - 1).toString(16);
+
   return new Promise((resolve, reject) => {
     const instance = autocannon(
       {
         connections: 400,
-        duration: 5,
         ...options,
         method: "POST",
         setupClient(client) {
