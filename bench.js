@@ -42,8 +42,7 @@ async function fetchEpochHeight() {
 
 async function fetchAccountBalance(account = receiver, asset = carryingAssetId) {
   const balanceRes = await axios.post(url, {
-    query:
-      'query { getBalance(address: "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4", id: "0xfee0decb4f6a76d402f200b5642a9236ba455c22aa80ef82d69fc70ea5ba20b5") } '
+    query: `query { getBalance(address: "${receiver}", id: "${carryingAssetId}") }`
   });
   return Number("0x" + balanceRes.data.data.getBalance);
 }
