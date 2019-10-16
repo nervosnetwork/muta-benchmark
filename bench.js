@@ -36,7 +36,7 @@ function getBody() {
 }
 
 async function fetchEpochHeight() {
-  const epochIdRes = await axios.post(url, `{"query":"query { getLatestEpoch { header { epochId } } }"}`);
+  const epochIdRes = await axios.post(url, { query: "query { getLatestEpoch { header { epochId } } }" });
   return Number("0x" + epochIdRes.data.data.getLatestEpoch.header.epochId);
 }
 
@@ -61,9 +61,7 @@ async function bench(options) {
   return new Promise((resolve, reject) => {
     const instance = autocannon(
       {
-        connections: 400,
         ...options,
-        method: "POST",
         setupClient(client) {
           client.setBody(getBody());
         }
