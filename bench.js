@@ -81,8 +81,21 @@ async function bench(options) {
     });
 
     instance.on("done", async function({ start, duration }) {
-      const endHeight = await fetchEpochHeight();
-      const endBalance = await fetchAccountBalance();
+      let endHeight = await fetchEpochHeight();
+      let endBalance = null;
+
+      // to make sure all tx are resolved
+      // waiting for epoch growth until balance is not modified
+      while (1) {
+        const lastBalance = await fetchAccountBalance();
+        const lastHeight = await fetchEpochHeight();
+        if (lastBalance === endBalance && lastHeight > endHeight) {
+          // endHeight = lastHeight;
+          break;
+        }
+        endBalance = lastBalance;
+        await new Promise(resolve => setTimeout(resolve, 200));
+      }
 
       const txCount = endBalance - balance;
       const epochCount = endHeight - height;
