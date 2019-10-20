@@ -19,6 +19,7 @@
     "commander": "^3.0.2",
     "inquirer": "^7.0.0",
     "keccak": "^2.0.0",
+    "ora": "^4.0.2",
     "random-bigint": "0.0.1",
     "rlp": "^2.2.3",
     "secp256k1": "^3.7.1"

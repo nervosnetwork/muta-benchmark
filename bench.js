@@ -2,6 +2,7 @@ const random = require("random-bigint");
 const autocannon = require("autocannon");
 const axios = require("axios");
 const sign = require("./sign");
+const ora = require("ora");
 
 const privateKey = Buffer.from("45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f", "hex");
 const chainId = "0xb6a4d7da21443f5e816e8700eea87610e6d769657d6b8ec73028457bf2ca4036";
@@ -84,9 +85,12 @@ async function bench(options) {
       let endHeight = await fetchEpochHeight();
       let endBalance = null;
 
+      // max waiting time 15 * 200ms = 3 sec
+      let i = 15;
+      const spin = ora("TPS is calculating ").start();
       // to make sure all tx are resolved
       // waiting for epoch growth until balance is not modified
-      while (1) {
+      while (i--) {
         const lastBalance = await fetchAccountBalance();
         const lastHeight = await fetchEpochHeight();
         if (lastBalance === endBalance && lastHeight > endHeight) {
@@ -96,6 +100,8 @@ async function bench(options) {
         endBalance = lastBalance;
         await new Promise(resolve => setTimeout(resolve, 200));
       }
+
+      spin.stop();
 
       const txCount = endBalance - balance;
       const epochCount = endHeight - height;
