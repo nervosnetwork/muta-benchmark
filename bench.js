@@ -8,11 +8,11 @@ const privateKey = Buffer.from("45c56be699dca666191ad3446897e0f480da234da8962702
 const chainId = "0xb6a4d7da21443f5e816e8700eea87610e6d769657d6b8ec73028457bf2ca4036";
 const feeAssetId = "0xfee0decb4f6a76d402f200b5642a9236ba455c22aa80ef82d69fc70ea5ba20b5";
 const carryingAssetId = "0xfee0decb4f6a76d402f200b5642a9236ba455c22aa80ef82d69fc70ea5ba20b5";
-const receiver = "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4";
 
 let errorCount = 0;
-let timeout = "0xffff";
+let timeout;
 let url;
+let receiver;
 
 function getBody() {
   return JSON.stringify({
@@ -55,6 +55,8 @@ function round(x) {
 async function bench(options) {
   const { gap } = options;
   url = options.url;
+  receiver = options.receiver;
+
   const balance = await fetchAccountBalance();
   const height = await fetchEpochHeight();
   timeout = "0x" + Number(height + Number(gap) - 1).toString(16);
@@ -117,7 +119,7 @@ async function bench(options) {
       console.log(`${round(txCount / duration)} tx/sec`);
     });
 
-    function finishedBench(err, res) {
+    function finishedBench(err) {
       if (err) reject(err);
       else resolve({ errorCount });
     }

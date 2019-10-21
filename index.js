@@ -8,8 +8,11 @@ const { args } = program
   .option("-d --duration [duration]", "number of second", 5)
   .option("-g --gap [gap]", "muta's timeout_gap", 30)
   .option("-c --connections [connections]", "number of connection", 20)
+  .option("--receiver [receiver]", "transfer receiver", "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4")
   .name("muta-bench")
-  .usage("-m POST -d 60 http://127.0.0.1:8000/graphql")
+  .usage(
+    "-m POST -d 60 -c 20 --gap 30 --receiver 0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4 http://127.0.0.1:8000/graphql"
+  )
   .parse(process.argv);
 
 const opts = program.opts();
