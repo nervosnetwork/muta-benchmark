@@ -6,7 +6,7 @@ const runBenchmark = require("./bench");
 const { args } = program
   .option("-m --method [method]", "HTTP method", "POST")
   .option("-d --duration [duration]", "number of second", 5)
-  .option("-g --gap [gap]", "muta's timeout_gap", 30)
+  .option("-g --gap [gap]", "muta's timeout_gap", 20)
   .option("-c --connections [connections]", "number of connection", 20)
   .option("--receiver [receiver]", "transfer receiver", "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4")
   .name("muta-bench")
