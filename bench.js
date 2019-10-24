@@ -1,8 +1,9 @@
 const random = require("random-bigint");
 const autocannon = require("autocannon");
 const axios = require("axios");
-const sign = require("./sign");
 const ora = require("ora");
+const sign = require("./sign");
+const logger = require("./logger");
 
 const privateKey = Buffer.from("45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f", "hex");
 const chainId = "0xb6a4d7da21443f5e816e8700eea87610e6d769657d6b8ec73028457bf2ca4036";
@@ -78,6 +79,7 @@ async function bench(options) {
       const res = client.parser.chunk.toString();
       const isError = res.includes("error");
       if (isError) {
+        logger.error(res);
         errorCount++;
       }
       client.setBody(getBody());
