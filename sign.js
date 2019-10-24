@@ -12,7 +12,14 @@ const toHex = buf => "0x" + buf.toString("hex");
 function sign(transaction, privateKey) {
   const tx = transaction;
 
-  let orderedTx = [tx.chainId, tx.feeCycle, tx.feeAssetId, tx.nonce, tx.timeout];
+  let orderedTx = [
+    0x00 /* transfer transaction is starts with 0 */,
+    tx.chainId,
+    tx.feeAssetId,
+    tx.feeCycle,
+    tx.nonce,
+    tx.timeout
+  ];
   orderedTx = orderedTx.concat([tx.carryingAmount, tx.carryingAssetId, tx.receiver]);
 
   const encoded = RLP.encode(orderedTx);
