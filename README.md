@@ -7,17 +7,16 @@
 ## Quick start
 
 ```shell
-git clone https://github.com/homura/muta-benchmark.git
+git clone https://github.com/nervosnetwork/muta-benchmark.git
 cd muta-benchmark
 npm install
 node index -d 5 http://127.0.0.1:8000/graphql
-
 ```
 
 or install globally
 
 ```
-git clone https://github.com/homura/muta-benchmark.git
+git clone https://github.com/nervosnetwork/muta-benchmark.git
 cd muta-benchmark
 npm install
 [sudo] npm link
