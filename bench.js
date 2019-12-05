@@ -5,15 +5,22 @@ const ora = require("ora");
 const sign = require("./sign");
 const logger = require("./logger");
 
-const privateKey = Buffer.from("45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f", "hex");
 const chainId = "0xb6a4d7da21443f5e816e8700eea87610e6d769657d6b8ec73028457bf2ca4036";
 const feeAssetId = "0xfee0decb4f6a76d402f200b5642a9236ba455c22aa80ef82d69fc70ea5ba20b5";
 const carryingAssetId = "0xfee0decb4f6a76d402f200b5642a9236ba455c22aa80ef82d69fc70ea5ba20b5";
 
+let privateKey;
 let errorCount = 0;
 let timeout;
 let url;
 let receiver;
+
+function toBuffer(input) {
+  if (typeof input === "string" && input.startsWith("0x")) {
+    return Buffer.from(input.slice(2), "hex");
+  }
+  return Buffer.from(input, "hex");
+}
 
 function getBody() {
   return JSON.stringify({
@@ -57,6 +64,7 @@ async function bench(options) {
   const { gap } = options;
   url = options.url;
   receiver = options.receiver;
+  privateKey = toBuffer(options.pk);
 
   const balance = await fetchAccountBalance();
   const height = await fetchEpochHeight();

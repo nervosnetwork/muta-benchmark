@@ -38,6 +38,11 @@ Options:
 
 ## Q&A
 
-### what can I do when unknown error appeared?
+### What can I do when unknown error appeared?
 
 Try to use `--verbose` for more bench information
+
+### How to customize private key of the sender?
+
+- use environment variable `PRIVATE_KEY=0x...`
+- or use `--pk 0x...` option
