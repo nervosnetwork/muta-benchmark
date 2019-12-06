@@ -31,7 +31,8 @@ Options:
   -d --duration [duration]        number of second (default: 5)
   -g --gap [gap]                  muta's timeout_gap (default: 20)
   -c --connections [connections]  number of connection (default: 20)
-  --receiver [receiver]           transfer receiver (default: "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4")
+  --pk [privateKey]               sender of the transfer
+  --receiver [receiver]           receiver of the transfer
   --verbose                       show verbose info, use it for debug (default: false)
   -h, --help                      output usage information
 ```
