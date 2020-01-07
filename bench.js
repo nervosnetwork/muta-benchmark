@@ -22,8 +22,12 @@ async function bench(options) {
 
   if (!assetId) {
     const createAssetSpin = ora("Creating asset").start();
-    const asset = await assetBenchProducer.createAsset();
-    createAssetSpin.succeed(`Created asset ${JSON.stringify(asset)}`);
+    try {
+      const asset = await assetBenchProducer.createAsset();
+      createAssetSpin.succeed(`Created asset ${JSON.stringify(asset)}`);
+    } catch (e) {
+      createAssetSpin.fail(`Asset create failed, ${e.message}`);
+    }
   }
   await assetBenchProducer.start();
 
