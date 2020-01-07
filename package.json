@@ -19,8 +19,10 @@
     "commander": "^3.0.2",
     "debug": "^4.1.1",
     "keccak": "^2.0.0",
+    "muta-sdk": "next",
     "ora": "^4.0.2",
     "random-bigint": "0.0.1",
+    "random-bytes": "^1.0.0",
     "rlp": "^2.2.3",
     "secp256k1": "^3.7.1"
   }
