@@ -19,6 +19,7 @@ class AssetBench {
     this.chainId = chainId;
     this.assetId = assetId;
 
+    this.to = randomBytes.sync(20).toString("hex");
     this.receiver = receiver;
     this.gap = gap;
   }
@@ -64,7 +65,7 @@ class AssetBench {
       {
         serviceName: "asset",
         method: "transfer",
-        payload: JSON.stringify({ asset_id: this.assetId, to: randomBytes.sync(20).toString("hex"), value: 10 }),
+        payload: JSON.stringify({ asset_id: this.assetId, to: this.to, value: 1 }),
         timeout: this.timeout,
         nonce: `0x${randomBytes.sync(32).toString("hex")}`,
         chainId: `${this.chainId}`,
