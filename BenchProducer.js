@@ -5,7 +5,7 @@ const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: Inpu
 
 class AssetBench {
   constructor(options) {
-    const { pk, chainId, gap, url, assetId, receiver } = options;
+    const { pk, chainId, gap, url, receiver } = options;
     const muta = new Muta({
       chainId,
       timeoutGap: gap,
@@ -17,7 +17,6 @@ class AssetBench {
     this.service = new AssetService(this.client, this.account);
 
     this.chainId = chainId;
-    this.assetId = assetId;
 
     this.to = randomBytes.sync(20).toString("hex");
     this.receiver = receiver;
@@ -36,12 +35,15 @@ class AssetBench {
     return asset;
   }
 
+  async prepare() {
+    const startEpoch = await this.client.getEpochHeight();
+    this.timeout = utils.toHex(Number(startEpoch + Number(this.gap) - 1));
+    this.startBalance = await this.service.getBalance(this.assetId);
+  }
+
   async start() {
     this.startTime = Date.now();
     this.startEpoch = await this.client.getEpochHeight();
-
-    this.startBalance = await this.service.getBalance(this.assetId);
-    this.timeout = utils.toHex(Number(this.startEpoch + Number(this.gap) - 1));
   }
 
   async end() {
@@ -52,23 +54,39 @@ class AssetBench {
     this.endEpoch = await this.client.getEpochHeight();
     this.endBalance = await this.service.getBalance(this.assetId);
 
+    const epochs = {};
+    for (let epochId = this.startEpoch; epochId <= this.endEpoch; epochId++ ) {
+      const res = await this.client.rawClient.getEpoch({ epochId: utils.toHex(epochId) });
+      epochs[epochId] = {
+        transactionsCount: res.getEpoch.orderedTxHashes.length
+      };
+    }
+
     return {
       timeUsage: this.endTime - this.startTime,
       // (- 1) is for wait 1 epoch to ensure all tx are finished
       epochUsage: this.endEpoch - this.startEpoch - 1,
-      transferProcessed: this.startBalance - this.endBalance
+      transferProcessed: this.startBalance - this.endBalance,
+
+      epochs
     };
   }
 
   produceRequestBody() {
+    const timeout = this.timeout;
+    const chainId = this.chainId;
+
+    const assetId = this.assetId;
+    const to = this.to;
+
     const variables = signTransaction(
       {
         serviceName: "asset",
         method: "transfer",
-        payload: JSON.stringify({ asset_id: this.assetId, to: this.to, value: 1 }),
-        timeout: this.timeout,
+        payload: JSON.stringify({ asset_id: assetId, to: to, value: 1 }),
+        timeout: timeout,
         nonce: `0x${randomBytes.sync(32).toString("hex")}`,
-        chainId: `${this.chainId}`,
+        chainId: `${chainId}`,
         cyclesPrice: "0x9999",
         cyclesLimit: "0x9999"
       },

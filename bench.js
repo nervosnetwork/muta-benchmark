@@ -7,10 +7,12 @@ function round(x) {
   return parseFloat(Math.round(x * 100) / 100).toFixed(2);
 }
 
+const signatures = [];
+
 async function bench(options) {
   let errorCount = 0;
 
-  const { gap, pk, assetId, url, receiver, chainId } = options;
+  const { gap, pk, assetId, url, receiver, chainId, preSignCount } = options;
   const assetBenchProducer = new AssetBenchProducer({
     pk,
     chainId,
@@ -29,6 +31,21 @@ async function bench(options) {
       createAssetSpin.fail(`Asset create failed, ${e.message}`);
     }
   }
+
+  await assetBenchProducer.prepare();
+
+  const signSpin = ora("Preparing signature").start();
+  for (let i = 0; i < preSignCount; i++) {
+    signatures.push(assetBenchProducer.produceRequestBody());
+  }
+  signSpin.succeed(`Prepared ${preSignCount} signatures`);
+
+  function getBody() {
+    const body = signatures.shift();
+    if (body) return body;
+    return assetBenchProducer.produceRequestBody();
+  }
+
   await assetBenchProducer.start();
 
   return new Promise((resolve, reject) => {
@@ -36,7 +53,7 @@ async function bench(options) {
       {
         ...options,
         setupClient(client) {
-          client.setBody(assetBenchProducer.produceRequestBody());
+          client.setBody(getBody());
         }
       },
       finishedBench
@@ -51,12 +68,12 @@ async function bench(options) {
         logger.error(res);
         errorCount++;
       }
-      client.setBody(assetBenchProducer.produceRequestBody());
+      client.setBody(getBody());
     });
 
     instance.on("done", async function({ start, duration }) {
       const spin = ora("TPS is calculating ").start();
-      const { epochUsage, transferProcessed } = await assetBenchProducer.end();
+      const { epochUsage, transferProcessed, epochs } = await assetBenchProducer.end();
       spin.stop();
 
       const txCount = transferProcessed;
@@ -68,6 +85,11 @@ async function bench(options) {
         { init: [assetBenchProducer.startBalance, assetBenchProducer.startEpoch] },
         { done: [assetBenchProducer.endBalance, assetBenchProducer.endEpoch] }
       );
+
+      console.log("epoch_id \t\t\t count ");
+      Object.entries(epochs).forEach(([id, info]) => {
+        console.log(`${id} \t\t\t ${info.transactionsCount} `);
+      });
 
       console.log("TPS:");
       console.log(table.toString());
