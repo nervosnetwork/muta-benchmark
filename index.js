@@ -15,6 +15,7 @@ const { args } = program
     process.env.PRIVATE_KEY || "0x45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f"
   )
   .option("--pre-sign-count [preSignCount]", "pre sign for performance", 10000)
+  .option("--tx-per-sec [txPerSec]", "max transaction per second", 99999999)
   .option("--chain-id [chainId]", "chain id", "0xb6a4d7da21443f5e816e8700eea87610e6d769657d6b8ec73028457bf2ca4036")
   .option("--receiver [receiver]", "receiver of the transfer", "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4")
   .option("--verbose", "show verbose info, use it for debug", false)

@@ -12,7 +12,7 @@ const signatures = [];
 async function bench(options) {
   let errorCount = 0;
 
-  const { gap, pk, assetId, url, receiver, chainId, preSignCount } = options;
+  const { gap, pk, assetId, url, receiver, chainId, preSignCount, txPerSec } = options;
   const assetBenchProducer = new AssetBenchProducer({
     pk,
     chainId,
@@ -40,9 +40,20 @@ async function bench(options) {
   }
   signSpin.succeed(`Prepared ${preSignCount} signatures`);
 
+  let before;
+  let count;
   function getBody() {
-    const body = signatures.shift();
-    if (body) return body;
+    if (!before) before = Date.now();
+    if (Date.now() - before >= 1000) {
+      before = Date.now();
+      count = 0;
+    } else {
+      count += 1;
+    }
+
+    if (txPerSec > count && signatures.length > 0) {
+      return signatures.shift();
+    }
     return assetBenchProducer.produceRequestBody();
   }
 
