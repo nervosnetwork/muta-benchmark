@@ -1,5 +1,6 @@
 const autocannon = require("autocannon");
 const ora = require("ora");
+const Table = require("cli-table3");
 const logger = require("./logger");
 const { AssetBenchProducer } = require("./BenchProducer");
 
@@ -90,20 +91,22 @@ async function bench(options) {
       const txCount = transferProcessed;
       const epochCount = epochUsage;
 
-      const Table = require("cli-table3");
-      const table = new Table({ head: ["", "balance", "epoch height"] });
-      table.push(
+      const balanceTable = new Table({ head: ["", "balance", "epoch height"] });
+      balanceTable.push(
         { init: [assetBenchProducer.startBalance, assetBenchProducer.startEpoch] },
         { done: [assetBenchProducer.endBalance, assetBenchProducer.endEpoch] }
       );
 
-      console.log("epoch_id \t\t\t count ");
-      Object.entries(epochs).forEach(([id, info]) => {
-        console.log(`${id} \t\t\t ${info.transactionsCount} `);
-      });
+      console.log("epoch_id \t\t count \t\t\t round");
+      Object.entries(epochs)
+        .sort((l, r) => Number(l[0]) - Number(r[0]))
+        .forEach(([id, info]) => {
+          console.log(`${id} \t\t\t ${info.transactionsCount} \t\t\t ${info.round}`);
+        });
 
       console.log("TPS:");
-      console.log(table.toString());
+      console.log(balanceTable.toString());
+
       console.log(`${round(txCount / epochCount)} tx/epoch`);
       console.log(`${round(duration / epochCount)} sec/epoch`);
       console.log(`${round(txCount / duration)} tx/sec`);

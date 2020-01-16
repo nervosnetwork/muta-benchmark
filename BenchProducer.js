@@ -38,12 +38,12 @@ class AssetBench {
   async prepare() {
     const startEpoch = await this.client.getEpochHeight();
     this.timeout = utils.toHex(Number(startEpoch + Number(this.gap) - 1));
-    this.startBalance = await this.service.getBalance(this.assetId);
   }
 
   async start() {
     this.startTime = Date.now();
     this.startEpoch = await this.client.getEpochHeight();
+    this.startBalance = await this.service.getBalance(this.assetId);
   }
 
   async end() {
@@ -55,9 +55,12 @@ class AssetBench {
     this.endBalance = await this.service.getBalance(this.assetId);
 
     const epochs = {};
-    for (let epochId = this.startEpoch; epochId <= this.endEpoch; epochId++ ) {
+    for (let epochId = this.startEpoch; epochId <= this.endEpoch; epochId++) {
       const res = await this.client.rawClient.getEpoch({ epochId: utils.toHex(epochId) });
+
       epochs[epochId] = {
+        round: Number("0x" + res.getEpoch.header.proof.round),
+        timeStamp: Number("0x" + res.getEpoch.header.timestamp + "000"),
         transactionsCount: res.getEpoch.orderedTxHashes.length
       };
     }
