@@ -85,20 +85,20 @@ async function bench(options) {
 
     instance.on("done", async function({ start, duration }) {
       const spin = ora("TPS is calculating ").start();
-      const { epochUsage, transferProcessed, epochs } = await assetBenchProducer.end();
+      const { blockUsage, transferProcessed, blocks } = await assetBenchProducer.end();
       spin.stop();
 
       const txCount = transferProcessed;
-      const epochCount = epochUsage;
+      const blockCount = blockUsage;
 
-      const balanceTable = new Table({ head: ["", "balance", "epoch height"] });
+      const balanceTable = new Table({ head: ["", "balance", "block height"] });
       balanceTable.push(
-        { init: [assetBenchProducer.startBalance, assetBenchProducer.startEpoch] },
-        { done: [assetBenchProducer.endBalance, assetBenchProducer.endEpoch] }
+        { init: [assetBenchProducer.startBalance, assetBenchProducer.startBlock] },
+        { done: [assetBenchProducer.endBalance, assetBenchProducer.endBlock] }
       );
 
-      console.log("epoch_id \t\t count \t\t\t round");
-      Object.entries(epochs)
+      console.log("block_id \t\t count \t\t\t round");
+      Object.entries(blocks)
         .sort((l, r) => Number(l[0]) - Number(r[0]))
         .forEach(([id, info]) => {
           console.log(`${id} \t\t\t ${info.transactionsCount} \t\t\t ${info.round}`);
@@ -107,8 +107,8 @@ async function bench(options) {
       console.log("TPS:");
       console.log(balanceTable.toString());
 
-      console.log(`${round(txCount / epochCount)} tx/epoch`);
-      console.log(`${round(duration / epochCount)} sec/epoch`);
+      console.log(`${round(txCount / blockCount)} tx/block`);
+      console.log(`${round(duration / blockCount)} sec/block`);
       console.log(`${round(txCount / duration)} tx/sec`);
     });
 
