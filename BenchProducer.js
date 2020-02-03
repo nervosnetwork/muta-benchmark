@@ -31,47 +31,47 @@ class AssetBench {
     });
     const asset = JSON.parse(await this.client.getReceipt(hash));
     this.assetId = asset.id;
-    await this.client.waitForNextNEpoch(1);
+    await this.client.waitForNextNBlock(1);
     return asset;
   }
 
   async prepare() {
-    const startEpoch = await this.client.getEpochHeight();
-    this.timeout = utils.toHex(Number(startEpoch + Number(this.gap) - 1));
+    const startBlock = await this.client.getLatestBlockHeight();
+    this.timeout = utils.toHex(Number(startBlock + Number(this.gap) - 1));
   }
 
   async start() {
     this.startTime = Date.now();
-    this.startEpoch = await this.client.getEpochHeight();
+    this.startBlock = await this.client.getLatestBlockHeight();
     this.startBalance = await this.service.getBalance(this.assetId);
   }
 
   async end() {
     this.endTime = Date.now();
 
-    await this.client.waitForNextNEpoch(1);
+    await this.client.waitForNextNBlock(1);
 
-    this.endEpoch = await this.client.getEpochHeight();
+    this.endBlock = await this.client.getLatestBlockHeight();
     this.endBalance = await this.service.getBalance(this.assetId);
 
-    const epochs = {};
-    for (let epochId = this.startEpoch; epochId <= this.endEpoch; epochId++) {
-      const res = await this.client.rawClient.getEpoch({ epochId: utils.toHex(epochId) });
+    const blocks = {};
+    for (let height = this.startBlock; height <= this.endBlock; height++) {
+      const res = await this.client.rawClient.getBlock({ height: utils.toHex(height) });
 
-      epochs[epochId] = {
-        round: Number("0x" + res.getEpoch.header.proof.round),
-        timeStamp: Number("0x" + res.getEpoch.header.timestamp + "000"),
-        transactionsCount: res.getEpoch.orderedTxHashes.length
+      blocks[height] = {
+        round: Number("0x" + res.getBlock.header.proof.round),
+        timeStamp: Number("0x" + res.getBlock.header.timestamp + "000"),
+        transactionsCount: res.getBlock.orderedTxHashes.length
       };
     }
 
     return {
       timeUsage: this.endTime - this.startTime,
-      // (- 1) is for wait 1 epoch to ensure all tx are finished
-      epochUsage: this.endEpoch - this.startEpoch - 1,
+      // (- 1) is for wait 1 block to ensure all tx are finished
+      blockUsage: this.endBlock - this.startBlock - 1,
       transferProcessed: this.startBalance - this.endBalance,
 
-      epochs
+      blocks
     };
   }
 
