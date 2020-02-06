@@ -1,5 +1,5 @@
 const { Muta, AssetService, signTransaction, utils } = require("muta-sdk");
-const randomBytes = require("random-bytes");
+const randomBytes = require("randombytes");
 
 const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
 
@@ -18,7 +18,7 @@ class AssetBench {
 
     this.chainId = chainId;
 
-    this.to = randomBytes.sync(20).toString("hex");
+    this.to = randomBytes(20).toString("hex");
     this.receiver = receiver;
     this.gap = gap;
   }
@@ -88,10 +88,10 @@ class AssetBench {
         method: "transfer",
         payload: JSON.stringify({ asset_id: assetId, to: to, value: 1 }),
         timeout: timeout,
-        nonce: `0x${randomBytes.sync(32).toString("hex")}`,
+        nonce: `0x${randomBytes(32).toString("hex")}`,
         chainId: `${chainId}`,
-        cyclesPrice: "0x9999",
-        cyclesLimit: "0x9999"
+        cyclesPrice: "0x01",
+        cyclesLimit: "0x5208"
       },
       this.account._privateKey
     );

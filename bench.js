@@ -2,59 +2,19 @@ const autocannon = require("autocannon");
 const ora = require("ora");
 const Table = require("cli-table3");
 const logger = require("./logger");
-const { AssetBenchProducer } = require("./BenchProducer");
+const { signTransaction } = require("muta-sdk");
+const randomBytes = require("randombytes");
 
 function round(x) {
   return parseFloat(Math.round(x * 100) / 100).toFixed(2);
 }
 
-const signatures = [];
+const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
 
-async function bench(options) {
+async function runMain(assetBenchProducer, workers, options) {
   let errorCount = 0;
 
-  const { gap, pk, assetId, url, receiver, chainId, preSignCount, txPerSec } = options;
-  const assetBenchProducer = new AssetBenchProducer({
-    pk,
-    chainId,
-    gap,
-    url,
-    assetId,
-    receiver
-  });
-
-  if (!assetId) {
-    const createAssetSpin = ora("Creating asset").start();
-    try {
-      const asset = await assetBenchProducer.createAsset();
-      createAssetSpin.succeed(`Created asset ${JSON.stringify(asset)}`);
-    } catch (e) {
-      createAssetSpin.fail(`Asset create failed, ${e.message}`);
-    }
-  }
-
-  await assetBenchProducer.prepare();
-
-  const signSpin = ora("Preparing signature").start();
-  for (let i = 0; i < preSignCount; i++) {
-    signatures.push(assetBenchProducer.produceRequestBody());
-  }
-  signSpin.succeed(`Prepared ${preSignCount} signatures`);
-
-  let before;
-  let count;
   function getBody() {
-    if (!before) before = Date.now();
-    if (Date.now() - before >= 1000) {
-      before = Date.now();
-      count = 0;
-    } else {
-      count += 1;
-    }
-
-    if (txPerSec > count && signatures.length > 0) {
-      return signatures.shift();
-    }
     return assetBenchProducer.produceRequestBody();
   }
 
@@ -84,6 +44,9 @@ async function bench(options) {
     });
 
     instance.on("done", async function({ start, duration }) {
+      for (const worker of workers) {
+        worker.process.kill();
+      }
       const spin = ora("TPS is calculating ").start();
       const { blockUsage, transferProcessed, blocks } = await assetBenchProducer.end();
       spin.stop();
@@ -119,4 +82,66 @@ async function bench(options) {
   });
 }
 
-module.exports = bench;
+function runWorker() {
+  let errorCount = 0;
+
+  const workerData = JSON.parse(process.env.WORKER_DATA);
+  const options = JSON.parse(process.env.OPTIONS);
+
+  const payload = JSON.stringify({ asset_id: workerData.assetId, to: workerData.to, value: 1 });
+
+  function getBody() {
+    const variables = signTransaction(
+      {
+        serviceName: "asset",
+        method: "transfer",
+        payload,
+        timeout: workerData.timeout,
+        nonce: `0x${randomBytes(32).toString("hex")}`,
+        chainId: `${workerData.chainId}`,
+        cyclesPrice: "0x01",
+        cyclesLimit: "0x5208"
+      },
+      Buffer.from(workerData.privateKey, "hex")
+    );
+
+    const tx = JSON.stringify({
+      query,
+      variables
+    });
+
+    return tx;
+  }
+
+  const instance = autocannon(
+    {
+      ...options,
+      setupClient(client) {
+        client.setBody(getBody());
+      }
+    },
+    finishedBench
+  );
+
+  autocannon.track(instance);
+
+  instance.on("response", function(client, statusCode, returnBytes, responseTime) {
+    const res = client.parser.chunk.toString();
+    const isError = res.includes("error");
+    if (isError) {
+      logger.error(res);
+      errorCount++;
+    }
+    client.setBody(getBody());
+  });
+
+  function finishedBench(err) {
+    if (err) {
+      process.exit(1);
+    }
+    process.exit(0);
+  }
+}
+
+exports.runWorker = runWorker;
+exports.runMain = runMain;

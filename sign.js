@@ -40,17 +40,17 @@ function toGQL(tx, privateKey) {
   return `mutation {
     sendTransferTransaction(
         inputRaw: {
-            chainId: "${tx.chainId}", 
-            feeCycle: "${tx.feeCycle}", 
-            feeAssetId: "${tx.feeAssetId}", 
-            nonce: "${tx.nonce}", 
+            chainId: "${tx.chainId}",
+            feeCycle: "${tx.feeCycle}",
+            feeAssetId: "${tx.feeAssetId}",
+            nonce: "${tx.nonce}",
             timeout: "${tx.timeout}"
           },
           inputAction: {
               carryingAmount: "${tx.carryingAmount}",
               carryingAssetId: "${tx.carryingAssetId}",
               receiver: "${tx.receiver}",
-          }, 
+          },
           inputEncryption: {
              txHash: "${signed.txHash}",
              pubkey: "${signed.pubkey}",
