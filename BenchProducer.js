@@ -1,4 +1,4 @@
-const { Muta, AssetService, signTransaction, utils } = require("muta-sdk");
+const { Muta, AssetService, utils } = require("muta-sdk");
 const randomBytes = require("randombytes");
 
 const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
@@ -12,8 +12,8 @@ class AssetBench {
       endpoint: url
     });
 
-    this.client = muta.client;
-    this.account = muta.accountFromPrivateKey(pk);
+    this.client = muta.client();
+    this.account = Muta.accountFromPrivateKey(pk);
     this.service = new AssetService(this.client, this.account);
 
     this.chainId = chainId;
@@ -24,13 +24,12 @@ class AssetBench {
   }
 
   async createAsset() {
-    const hash = await this.service.createAsset({
+    const asset = await this.service.createAsset({
       supply: 99999999,
       symbol: Math.random().toString(),
       name: Math.random().toString()
     });
-    const asset = JSON.parse(await this.client.getReceipt(hash));
-    this.assetId = asset.id;
+    this.assetId = asset.asset_id;
     await this.client.waitForNextNBlock(1);
     return asset;
   }
@@ -82,7 +81,7 @@ class AssetBench {
     const assetId = this.assetId;
     const to = this.to;
 
-    const variables = signTransaction(
+    const variables = utils.signTransaction(
       {
         serviceName: "asset",
         method: "transfer",

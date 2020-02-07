@@ -2,7 +2,7 @@ const autocannon = require("autocannon");
 const ora = require("ora");
 const Table = require("cli-table3");
 const logger = require("./logger");
-const { signTransaction } = require("muta-sdk");
+const { utils } = require("muta-sdk");
 const randomBytes = require("randombytes");
 
 function round(x) {
@@ -91,7 +91,7 @@ function runWorker() {
   const payload = JSON.stringify({ asset_id: workerData.assetId, to: workerData.to, value: 1 });
 
   function getBody() {
-    const variables = signTransaction(
+    const variables = utils.signTransaction(
       {
         serviceName: "asset",
         method: "transfer",
