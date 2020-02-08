@@ -21,6 +21,7 @@ const { args } = program
   .option("--receiver [receiver]", "receiver of the transfer", "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4")
   .option("--verbose", "show verbose info, use it for debug", false)
   .option("--cpu [cpu]", "cpu nums", 3)
+  .option("--flush-time [flushTime]", "flush time(s)", 10)
   .name("muta-bench")
   .usage(
     "-m POST -d 60 -c 20 --gap 30 --receiver 0x1000000000000000000000000000000000000000 --pk 0x45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f http://127.0.0.1:8000/graphql"
@@ -37,24 +38,25 @@ if (opts.verbose) {
 }
 
 if (cluster.isMaster) {
-  run()
-    .catch(({ errorCount }) => {
-      if (errorCount > 0) {
-        console.error(`HTTP success but GraphQL error count: ${errorCount}`);
-      }
-    });
+  run().catch(err => {
+    console.error(err);
+    if (err.errorCount > 0) {
+      console.error(`HTTP success but GraphQL error count: ${errorCount}`);
+    }
+  });
 } else {
   runWorker();
 }
 
 async function run() {
-  const { gap, pk, url, receiver, chainId } = opts;
+  const { gap, pk, url, receiver, chainId, flushTime } = opts;
   const assetBenchProducer = new AssetBenchProducer({
     pk,
     chainId,
     gap,
     url,
-    receiver
+    receiver,
+    flushTime
   });
 
   const createAssetSpin = ora("Creating asset").start();
@@ -74,7 +76,8 @@ async function run() {
         to: assetBenchProducer.to,
         timeout: assetBenchProducer.timeout,
         chainId: assetBenchProducer.chainId,
-        privateKey: assetBenchProducer.account._privateKey.toString("hex")
+        privateKey: assetBenchProducer.account._privateKey.toString("hex"),
+        flushTime: opts.flushTime
       }),
       OPTIONS: JSON.stringify(opts)
     });

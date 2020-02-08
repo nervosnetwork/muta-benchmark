@@ -1,17 +1,22 @@
 const { Muta, AssetService, utils } = require("muta-sdk");
 const randomBytes = require("randombytes");
+const md5 = require("md5");
 
 const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
 
+let currentTime = Date.now();
+let flushTime = null;
+
 class AssetBench {
   constructor(options) {
-    const { pk, chainId, gap, url, receiver } = options;
+    const { pk, chainId, gap, url, receiver, flushTime: f } = options;
     const muta = new Muta({
       chainId,
       timeoutGap: gap,
       endpoint: url
     });
 
+    flushTime = f * 1000;
     this.client = muta.client();
     this.account = Muta.accountFromPrivateKey(pk);
     this.service = new AssetService(this.client, this.account);
@@ -81,13 +86,18 @@ class AssetBench {
     const assetId = this.assetId;
     const to = this.to;
 
+    if (Date.now() - currentTime > flushTime) {
+      currentTime = Date.now();
+    }
+
+    const nonce = Buffer.from(md5(randomBytes(16).toString("hex") + "" + currentTime)).toString("hex");
     const variables = utils.signTransaction(
       {
         serviceName: "asset",
         method: "transfer",
         payload: JSON.stringify({ asset_id: assetId, to: to, value: 1 }),
         timeout: timeout,
-        nonce: `0x${randomBytes(32).toString("hex")}`,
+        nonce: `0x${nonce}`,
         chainId: `${chainId}`,
         cyclesPrice: "0x01",
         cyclesLimit: "0x5208"

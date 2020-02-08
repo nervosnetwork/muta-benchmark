@@ -4,12 +4,16 @@ const Table = require("cli-table3");
 const logger = require("./logger");
 const { utils } = require("muta-sdk");
 const randomBytes = require("randombytes");
+const md5 = require("md5");
 
 function round(x) {
   return parseFloat(Math.round(x * 100) / 100).toFixed(2);
 }
 
 const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
+
+let currentTime = Date.now();
+let flushTime = null;
 
 async function runMain(assetBenchProducer, workers, options) {
   let errorCount = 0;
@@ -88,16 +92,23 @@ function runWorker() {
   const workerData = JSON.parse(process.env.WORKER_DATA);
   const options = JSON.parse(process.env.OPTIONS);
 
+  flushTime = workerData.flushTime * 1000;
+
   const payload = JSON.stringify({ asset_id: workerData.assetId, to: workerData.to, value: 1 });
 
   function getBody() {
+    const nonce = Buffer.from(md5(randomBytes(16).toString("hex") + "" + currentTime)).toString("hex");
+
+    if (Date.now() - currentTime > flushTime) {
+      currentTime = Date.now();
+    }
     const variables = utils.signTransaction(
       {
         serviceName: "asset",
         method: "transfer",
         payload,
         timeout: workerData.timeout,
-        nonce: `0x${randomBytes(32).toString("hex")}`,
+        nonce: `0x${nonce}`,
         chainId: `${workerData.chainId}`,
         cyclesPrice: "0x01",
         cyclesLimit: "0x5208"
