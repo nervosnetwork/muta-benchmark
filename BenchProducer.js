@@ -14,6 +14,7 @@ class AssetBench {
 
     this.client = muta.client();
     this.account = Muta.accountFromPrivateKey(pk);
+    this.rawClient = this.client.getRawClient();
     this.service = new AssetService(this.client, this.account);
 
     this.chainId = chainId;
@@ -24,12 +25,12 @@ class AssetBench {
   }
 
   async createAsset() {
-    const asset = await this.service.createAsset({
+    const asset = await this.service.create_asset({
       supply: 99999999,
       symbol: Math.random().toString(),
       name: Math.random().toString()
     });
-    this.assetId = asset.asset_id;
+    this.assetId = asset.response.ret.id;
     await this.client.waitForNextNBlock(1);
     return asset;
   }
@@ -42,7 +43,12 @@ class AssetBench {
   async start() {
     this.startTime = Date.now();
     this.startBlock = await this.client.getLatestBlockHeight();
-    this.startBalance = await this.service.getBalance(this.assetId);
+    this.startBalance = await this.service
+      .get_balance({
+        asset_id: this.assetId,
+        user: this.account.address
+      })
+      .then(res => res.ret.balance);
   }
 
   async end() {
@@ -51,11 +57,16 @@ class AssetBench {
     await this.client.waitForNextNBlock(1);
 
     this.endBlock = await this.client.getLatestBlockHeight();
-    this.endBalance = await this.service.getBalance(this.assetId);
+    this.endBalance = await this.service
+      .get_balance({
+        asset_id: this.assetId,
+        user: this.account.address
+      })
+      .then(res => res.ret.balance);
 
     const blocks = {};
     for (let height = this.startBlock; height <= this.endBlock; height++) {
-      const res = await this.client.rawClient.getBlock({ height: utils.toHex(height) });
+      const res = await this.rawClient.getBlock({ height: utils.toHex(height) });
 
       blocks[height] = {
         round: Number("0x" + res.getBlock.header.proof.round),
