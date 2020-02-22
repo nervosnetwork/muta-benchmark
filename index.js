@@ -67,6 +67,9 @@ async function run() {
 
   await assetBenchProducer.prepare();
 
+  opts.headers = {};
+  opts.headers['Content-Type'] = "application/json";
+
   const workers = Array.from({ length: opts.cpu }).map(() => {
     const worker = cluster.fork({
       WORKER_DATA: JSON.stringify({
