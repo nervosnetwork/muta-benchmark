@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/homura/muta-benchmark/compare/v0.1.0...v0.1.1) (2020-02-23)
+
+
+### Features
+
+* add json output ([#5](https://github.com/homura/muta-benchmark/issues/5)) ([a2ac419](https://github.com/homura/muta-benchmark/commit/a2ac4190a55d703af8f4535f6e3c6bc4ede4958c))
+* pretty json output ([e3a71ce](https://github.com/homura/muta-benchmark/commit/e3a71ceaf3cf03babe42e7983a61deed23c776c8))
+
 ## [0.1.0](https://github.com/homura/muta-benchmark/compare/v0.0.2...v0.1.0) (2020-02-22)
 
 
