@@ -21,6 +21,7 @@ const { args } = program
   .option("--receiver [receiver]", "receiver of the transfer", "0x103e9b982b443592ffc3d4c2a484c220fb3e29e2e4")
   .option("--verbose", "show verbose info, use it for debug", false)
   .option("--cpu [cpu]", "cpu nums", 3)
+  .option("--json", "print output as json", false)
   .name("muta-bench")
   .usage(
     "-m POST -d 60 -c 20 --gap 30 --receiver 0x1000000000000000000000000000000000000000 --pk 0x45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f http://127.0.0.1:8000/graphql"
