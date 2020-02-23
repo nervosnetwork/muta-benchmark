@@ -75,19 +75,18 @@ async function runMain(assetBenchProducer, workers, options) {
       console.log(`${round(txCount / duration)} tx/sec`);
 
       if (options.json) {
-        var a = {
-          'blocks': [],
-          'tx_block': round(txCount / blockCount),
-          'sec_block': round(duration / blockCount),
-          'tx_sec': round(txCount / duration),
+        const benchDetail = {
+          blocks: [],
+          tx_block: round(txCount / blockCount),
+          sec_block: round(duration / blockCount),
+          tx_sec: round(txCount / duration)
         };
         Object.entries(blocks)
           .sort((l, r) => Number(l[0]) - Number(r[0]))
           .forEach(([id, info]) => {
-            a.blocks.push([parseInt(id), info.transactionsCount, info.round])
+            benchDetail.blocks.push([parseInt(id), info.transactionsCount, info.round]);
           });
-        console.log(JSON.stringify(a))
-        return;
+        console.log(JSON.stringify(benchDetail, null, 2));
       }
     });
 
