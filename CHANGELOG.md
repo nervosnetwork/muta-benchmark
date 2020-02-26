@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/homura/muta-benchmark/compare/v0.1.1...v0.1.2) (2020-02-26)
+
+
+### Bug Fixes
+
+* fix failure caused by custom `gap` or `chain-id` ([c959b25](https://github.com/homura/muta-benchmark/commit/c959b254ed58555daf2e1d5ddfbc9b7fd9bccafe))
+
 ### [0.1.1](https://github.com/homura/muta-benchmark/compare/v0.1.0...v0.1.1) (2020-02-23)
 
 
