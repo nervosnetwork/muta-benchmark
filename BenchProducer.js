@@ -70,7 +70,7 @@ class AssetBench {
 
       blocks[height] = {
         round: Number("0x" + res.getBlock.header.proof.round),
-        timeStamp: Number("0x" + res.getBlock.header.timestamp + "000"),
+        timeStamp: Number("0x" + res.getBlock.header.timestamp),
         transactionsCount: res.getBlock.orderedTxHashes.length
       };
     }
