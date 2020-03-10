@@ -3,6 +3,14 @@ const randomBytes = require("randombytes");
 
 const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
 
+function hexToTimestamp(hex) {
+  const timestamp = Number(hex);
+  if (timestamp <= 9999999999) {
+    return timestamp * 1000;
+  }
+  return timestamp;
+}
+
 class AssetBench {
   constructor(options) {
     const { pk, chainId, gap, url, receiver } = options;
@@ -19,7 +27,7 @@ class AssetBench {
 
     this.chainId = chainId;
 
-    this.to = randomBytes(20).toString("hex");
+    this.to = "0x" + randomBytes(20).toString("hex");
     this.receiver = receiver;
     this.gap = gap;
   }
@@ -69,8 +77,8 @@ class AssetBench {
       const res = await this.rawClient.getBlock({ height: utils.toHex(height) });
 
       blocks[height] = {
-        round: Number("0x" + res.getBlock.header.proof.round),
-        timeStamp: Number("0x" + res.getBlock.header.timestamp),
+        round: Number(res.getBlock.header.proof.round),
+        timeStamp: hexToTimestamp(res.getBlock.header.timestamp),
         transactionsCount: res.getBlock.orderedTxHashes.length
       };
     }
