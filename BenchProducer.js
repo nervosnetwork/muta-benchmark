@@ -4,7 +4,7 @@ const randomBytes = require("randombytes");
 const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
 
 function hexToTimestamp(hex) {
-  const timestamp = Number(hex);
+  const timestamp = Number(utils.toHex(hex));
   if (timestamp <= 9999999999) {
     return timestamp * 1000;
   }
