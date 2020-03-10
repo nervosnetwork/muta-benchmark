@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/homura/muta-benchmark/compare/v0.1.3...v0.1.4) (2020-03-10)
+
+
+### Bug Fixes
+
+* compatible with millisecond and second timestamp ([71bdabd](https://github.com/homura/muta-benchmark/commit/71bdabd33fdd9ad653a1b1c2132b3c1e0ad6b1d0))
+
 ### [0.1.3](https://github.com/homura/muta-benchmark/compare/v0.1.2...v0.1.3) (2020-03-10)
 
 
