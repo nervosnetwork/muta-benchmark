@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/homura/muta-benchmark/compare/v0.1.4...v0.2.0) (2020-03-13)
+
+
+### Features
+
+* supported precision for AssetService ([a0bf45c](https://github.com/homura/muta-benchmark/commit/a0bf45c6a4d6bbe78b7ee7a21cc75880d4749c30))
+
 ### [0.1.4](https://github.com/homura/muta-benchmark/compare/v0.1.3...v0.1.4) (2020-03-10)
 
 
