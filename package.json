@@ -19,7 +19,7 @@
     "commander": "^3.0.2",
     "debug": "^4.1.1",
     "keccak": "^2.0.0",
-    "muta-sdk": "^0.7.0-alpha.5",
+    "muta-sdk": "^0.8.0-alpha.0",
     "ora": "^4.0.2",
     "randombytes": "^2.1.0",
     "rlp": "^2.2.3",
