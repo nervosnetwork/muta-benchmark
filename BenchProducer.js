@@ -36,7 +36,8 @@ class AssetBench {
     const asset = await this.service.create_asset({
       supply: 99999999,
       symbol: Math.random().toString(),
-      name: Math.random().toString()
+      name: Math.random().toString(),
+      precision: 0
     });
     this.assetId = asset.response.ret.id;
     await this.client.waitForNextNBlock(1);
