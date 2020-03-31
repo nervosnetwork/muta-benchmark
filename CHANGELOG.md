@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/homura/muta-benchmark/compare/v0.2.0...v0.3.0) (2020-03-31)
+
+
+### Features
+
+* rewrite with typescript ([77d8ec4](https://github.com/homura/muta-benchmark/commit/77d8ec4e9a91200c9f67379cf333df033c69ef71))
+
 ## [0.2.0](https://github.com/homura/muta-benchmark/compare/v0.1.4...v0.2.0) (2020-03-13)
 
 
