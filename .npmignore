@@ -1,0 +1,9 @@
+src
+tsconfig.json
+.prettierignore
+.vscode
+build/docs
+**/*.spec.*
+coverage
+.nyc_output
+*.log

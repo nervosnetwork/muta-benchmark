@@ -14,4 +14,5 @@ RUN cd /src && \
     npm install -g yarn && \
     echo done
 
-ENTRYPOINT ["node", "index"]
+CMD npm run build
+ENTRYPOINT ["node", "build/index.js"]
