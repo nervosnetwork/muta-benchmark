@@ -2,7 +2,7 @@
 
 A general Muta RPC performance testing framework
 
-##
+![architecture](./asset/architecture.png)
 
 ## Requirement
 
