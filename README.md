@@ -14,17 +14,14 @@ A general Muta RPC performance testing framework
 git clone https://github.com/nervosnetwork/muta-benchmark.git
 cd muta-benchmark
 npm install
-node index -d 5 http://127.0.0.1:8000/graphql
+npm run build
+node build/index -d 5 --endpoint http://127.0.0.1:8000/graphql
 ```
 
 or install globally
 
 ```
-git clone https://github.com/nervosnetwork/muta-benchmark.git
-cd muta-benchmark
-npm install
-[sudo] npm link
-muta-bench -d 5 http://127.0.0.1:8000/graphql
+npm install muta-bench -g
 ```
 
 ## Options
