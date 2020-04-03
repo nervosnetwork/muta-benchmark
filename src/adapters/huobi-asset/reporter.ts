@@ -98,7 +98,7 @@ export class BalanceReporter extends SimpleReporter<ReporterObject> {
 
     return {
       block,
-      balance: Number(balance.ret.balance),
+      balance: Number(balance.succeedData.balance),
       timestamp,
     };
   }

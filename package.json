@@ -25,7 +25,7 @@
     "debug": "^4.1.1",
     "huobi-chain-sdk": "^0.0.3",
     "lodash": "^4.17.15",
-    "muta-sdk": "^0.9.2",
+    "muta-sdk": "^0.10.0",
     "ora": "^4.0.2",
     "randombytes": "^2.1.0",
     "utility-types": "^3.10.0"
