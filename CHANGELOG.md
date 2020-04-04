@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/homura/muta-benchmark/compare/v0.1.4...v0.1.5) (2020-04-04)
+
+
+### Features
+
+* update sdk to 0.10 ([291e838](https://github.com/homura/muta-benchmark/commit/291e8380d880b2d94eba355373ef51c277a8c5cd))
+
 ### [0.1.4](https://github.com/homura/muta-benchmark/compare/v0.1.3...v0.1.4) (2020-03-10)
 
 
