@@ -38,7 +38,7 @@ class AssetBench {
       symbol: Math.random().toString(),
       name: Math.random().toString()
     });
-    this.assetId = asset.response.ret.id;
+    this.assetId = asset.response.response.succeedData.id;
     await this.client.waitForNextNBlock(1);
     return asset;
   }
@@ -56,7 +56,7 @@ class AssetBench {
         asset_id: this.assetId,
         user: this.account.address
       })
-      .then(res => res.ret.balance);
+      .then(res => res.succeedData.balance);
   }
 
   async end() {
@@ -70,7 +70,7 @@ class AssetBench {
         asset_id: this.assetId,
         user: this.account.address
       })
-      .then(res => res.ret.balance);
+      .then(res => res.succeedData.balance);
 
     const blocks = {};
     for (let height = this.startBlock; height <= this.endBlock; height++) {
