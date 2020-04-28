@@ -15,4 +15,4 @@ RUN cd /src && \
     echo done
 
 CMD npm run build
-ENTRYPOINT ["node", "build/index.js"]
+ENTRYPOINT ["node", "build/bin/index.js"]

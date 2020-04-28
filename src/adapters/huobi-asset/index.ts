@@ -68,7 +68,7 @@ class HuobiAssetAdapter extends Adapter<HuobiAssetAdapterOption> {
     if (!this.adapterConfig.assetId) {
       const spin = ora('creating asset').start();
       const asset = await this.createAsset();
-      this.adapterConfig.assetId = utils.toHex(asset.response.ret.id);
+      this.adapterConfig.assetId = utils.toHex(asset.response.response.succeedData.id);
       spin.succeed('asset created');
     }
 
