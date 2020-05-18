@@ -2,8 +2,6 @@ import autocannon from 'autocannon';
 import { Adapter } from './adapters/BaseBenchAdapter';
 import { useContext } from './context';
 
-type JSONString = string;
-
 interface RunnerConfig {
   /* path of the adapter */
   adapter: string;

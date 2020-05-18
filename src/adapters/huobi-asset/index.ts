@@ -1,7 +1,6 @@
-import { AssetService, AssetServiceModel } from 'huobi-chain-sdk';
+import { AssetService } from 'huobi-chain-sdk';
 import _ from 'lodash';
 import { utils } from 'muta-sdk';
-import { BindingClassPrototype } from 'muta-sdk/build/main/service/binding';
 import ora from 'ora';
 import { useContext } from '../../context';
 import { TxProducer } from '../../producers/TxProducer';
@@ -27,7 +26,7 @@ export interface WorkerData {
 class HuobiAssetAdapter extends Adapter<HuobiAssetAdapterOption> {
   producer!: TxProducer;
 
-  service!: BindingClassPrototype<AssetServiceModel>;
+  service!: InstanceType<typeof AssetService>;
 
   reporter!: BalanceReporter;
 
