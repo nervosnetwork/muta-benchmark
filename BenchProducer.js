@@ -17,7 +17,7 @@ class AssetBench {
     const muta = new Muta({
       chainId,
       timeoutGap: gap,
-      endpoint: url
+      endpoint: Array.isArray(url) ? url[0] : url
     });
 
     this.client = muta.client();

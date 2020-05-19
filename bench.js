@@ -1,4 +1,4 @@
-const autocannon = require("autocannon");
+const autocannon = require("@homura/autocannon");
 const ora = require("ora");
 const Table = require("cli-table3");
 const logger = require("./logger");

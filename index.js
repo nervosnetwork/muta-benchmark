@@ -43,7 +43,7 @@ const { args } = program
   .parse(process.argv);
 
 const opts = program.opts();
-const url = args[0] || "http://127.0.0.1:8000/graphql";
+const url = args.length ? args : "http://127.0.0.1:8000/graphql";
 
 opts.url = url;
 
