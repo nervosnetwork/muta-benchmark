@@ -1,0 +1,10 @@
+.gitignore
+.prettierrc
+*.lock
+lua
+node_modules
+
+Dockerfile
+
+.idea
+.vscode
