@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/homura/muta-benchmark/compare/v0.1.5...v0.1.6) (2020-05-19)
+
+
+### Features
+
+* supported bench with multiple url ([9210cf1](https://github.com/homura/muta-benchmark/commit/9210cf15909bd4b989978b9960b3bc9c4d0e33a6))
+
 ### [0.1.5](https://github.com/homura/muta-benchmark/compare/v0.1.4...v0.1.5) (2020-04-04)
 
 
