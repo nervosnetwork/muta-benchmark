@@ -14,7 +14,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "autocannon": "^4.1.1",
+    "@homura/autocannon": "^4.7.0-alpha.0",
     "cli-table3": "^0.5.1",
     "commander": "^3.0.2",
     "debug": "^4.1.1",
