@@ -47,3 +47,12 @@ Try to use `--verbose` for more bench information
 
 - use environment variable `PRIVATE_KEY=0x...`
 - or use `--pk 0x...` option
+
+### How to run with multiple nodes
+
+```
+# each node will be allocated 15 connections
+muta-bench -c 30 http://127.0.0.1:8000/graphql http://127.0.0.1:8001/graphql
+```
+
+It is recommended to adjust the number of connections to n times the number of nodes
