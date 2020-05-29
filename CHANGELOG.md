@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/homura/muta-benchmark/compare/v0.1.6...v0.1.7) (2020-05-29)
+
+
+### Features
+
+* update muta-sdk version to fit prevHash ([32176be](https://github.com/homura/muta-benchmark/commit/32176bea2703243b64e8cf95804cd52dac4cbabe))
+
 ### [0.1.6](https://github.com/homura/muta-benchmark/compare/v0.1.5...v0.1.6) (2020-05-19)
 
 
