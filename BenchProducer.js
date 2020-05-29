@@ -1,4 +1,5 @@
-const { Muta, AssetService, utils } = require("muta-sdk");
+const { Muta, utils } = require("muta-sdk");
+const { AssetService } = require("@mutajs/service");
 const randomBytes = require("randombytes");
 
 const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
