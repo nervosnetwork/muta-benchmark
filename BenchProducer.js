@@ -1,6 +1,6 @@
-const { Muta, utils } = require("muta-sdk");
-const { AssetService } = require("@mutajs/service");
-const randomBytes = require("randombytes");
+const { Muta, utils } = require('muta-sdk');
+const { AssetService } = require('@mutajs/service');
+const randomBytes = require('randombytes');
 
 const query = `mutation ( $inputRaw: InputRawTransaction! $inputEncryption: InputTransactionEncryption! ) { sendTransaction(inputRaw: $inputRaw, inputEncryption: $inputEncryption) }`;
 
@@ -18,17 +18,21 @@ class AssetBench {
     const muta = new Muta({
       chainId,
       timeoutGap: gap,
-      endpoint: Array.isArray(url) ? url[0] : url
+      endpoint: Array.isArray(url) ? url[0] : url,
     });
 
     this.client = muta.client();
     this.account = Muta.accountFromPrivateKey(pk);
     this.rawClient = this.client.getRawClient();
-    this.service = new AssetService(this.client, this.account);
+    this.service = new AssetService(
+      this.client,
+      this.account.address,
+      this.account
+    );
 
     this.chainId = chainId;
 
-    this.to = "0x" + randomBytes(20).toString("hex");
+    this.to = '0x' + randomBytes(20).toString('hex');
     this.receiver = receiver;
     this.gap = gap;
   }
@@ -37,7 +41,7 @@ class AssetBench {
     const asset = await this.service.create_asset({
       supply: 99999999,
       symbol: Math.random().toString(),
-      name: Math.random().toString()
+      name: Math.random().toString(),
     });
     this.assetId = asset.response.response.succeedData.id;
     await this.client.waitForNextNBlock(1);
@@ -55,9 +59,9 @@ class AssetBench {
     this.startBalance = await this.service
       .get_balance({
         asset_id: this.assetId,
-        user: this.account.address
+        user: this.account.address,
       })
-      .then(res => res.succeedData.balance);
+      .then((res) => res.succeedData.balance);
   }
 
   async end() {
@@ -69,18 +73,20 @@ class AssetBench {
     this.endBalance = await this.service
       .get_balance({
         asset_id: this.assetId,
-        user: this.account.address
+        user: this.account.address,
       })
-      .then(res => res.succeedData.balance);
+      .then((res) => res.succeedData.balance);
 
     const blocks = {};
     for (let height = this.startBlock; height <= this.endBlock; height++) {
-      const res = await this.rawClient.getBlock({ height: utils.toHex(height) });
+      const res = await this.rawClient.getBlock({
+        height: utils.toHex(height),
+      });
 
       blocks[height] = {
         round: Number(res.getBlock.header.proof.round),
         timeStamp: hexToTimestamp(res.getBlock.header.timestamp),
-        transactionsCount: res.getBlock.orderedTxHashes.length
+        transactionsCount: res.getBlock.orderedTxHashes.length,
       };
     }
 
@@ -90,7 +96,7 @@ class AssetBench {
       blockUsage: this.endBlock - this.startBlock - 1,
       transferProcessed: this.startBalance - this.endBalance,
 
-      blocks
+      blocks,
     };
   }
 
@@ -103,21 +109,22 @@ class AssetBench {
 
     const variables = utils.signTransaction(
       {
-        serviceName: "asset",
-        method: "transfer",
+        serviceName: 'asset',
+        method: 'transfer',
         payload: JSON.stringify({ asset_id: assetId, to: to, value: 1 }),
         timeout: timeout,
-        nonce: `0x${randomBytes(32).toString("hex")}`,
+        nonce: `0x${randomBytes(32).toString('hex')}`,
         chainId: `${chainId}`,
-        cyclesPrice: "0x01",
-        cyclesLimit: "0x5208"
+        cyclesPrice: '0x01',
+        cyclesLimit: '0x5208',
+        sender: this.account.address,
       },
       this.account._privateKey
     );
 
     return JSON.stringify({
       query,
-      variables
+      variables,
     });
   }
 }
