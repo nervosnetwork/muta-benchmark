@@ -1,6 +1,6 @@
 {
   "name": "muta-bench",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Muta benchmark",
   "main": "index.js",
   "publishConfig": {
@@ -27,6 +27,7 @@
     "uuid": "^3.4.0"
   },
   "devDependencies": {
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "standard-version": "^8.0.0"
   }
 }

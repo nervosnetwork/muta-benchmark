@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.7...v0.1.8) (2020-06-22)
+
+
+### Features
+
+* support multiple signatures with  nervosnetwork/muta[#318](https://github.com/nervosnetwork/muta-benchmark/issues/318) ([7c0f569](https://github.com/nervosnetwork/muta-benchmark/commit/7c0f569a345028ade1a5f73a8b570f3e485a9f11))
+
 ### [0.1.7](https://github.com/homura/muta-benchmark/compare/v0.1.6...v0.1.7) (2020-05-29)
 
 
