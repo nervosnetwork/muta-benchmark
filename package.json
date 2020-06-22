@@ -15,14 +15,18 @@
   "license": "MIT",
   "dependencies": {
     "@homura/autocannon": "^4.7.0-alpha.0",
-    "@mutajs/service": "^0.11.0-dev.0",
+    "@mutajs/service": "^0.11.0-dev.3",
     "cli-table3": "^0.5.1",
     "commander": "^3.0.2",
     "debug": "^4.1.1",
-    "muta-sdk": "^0.11.0-dev.0",
+    "graphql": "^15.1.0",
+    "muta-sdk": "^0.11.1-dev.1",
     "ora": "^4.0.2",
     "randombytes": "^2.1.0",
     "rlp": "^2.2.3",
     "uuid": "^3.4.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
   }
 }
