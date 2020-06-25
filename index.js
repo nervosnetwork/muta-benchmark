@@ -8,18 +8,24 @@ const { runMain, runWorker } = require("./bench");
 const logger = require("./logger");
 const { AssetBenchProducer } = require("./BenchProducer");
 
-const toNumber = v => parseInt(v);
+const toNumber = (v) => parseInt(v);
 
 const { args } = program
   .option("-m --method [method]", "HTTP method", "POST")
   .option("-d --duration [duration]", "number of second", toNumber, 60)
   .option("-g --gap [gap]", "muta's timeout_gap", toNumber, 20)
-  .option("-c --connections [connections]", "number of connection", toNumber, 20)
+  .option(
+    "-c --connections [connections]",
+    "number of connection",
+    toNumber,
+    20
+  )
   .option(
     "--pk [privateKey]",
     "sender of the transfer",
     utils.toHex,
-    process.env.PRIVATE_KEY || "0x45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f"
+    process.env.PRIVATE_KEY ||
+      "0x45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f"
   )
   .option(
     "--chain-id [chainId]",
@@ -69,7 +75,7 @@ async function run() {
     chainId,
     gap,
     url,
-    receiver
+    receiver,
   });
 
   const createAssetSpin = ora("Creating asset").start();
@@ -92,13 +98,14 @@ async function run() {
         to: assetBenchProducer.to,
         timeout: assetBenchProducer.timeout,
         chainId: assetBenchProducer.chainId,
-        privateKey: assetBenchProducer.account._privateKey.toString("hex")
+        privateKey: assetBenchProducer.account._privateKey.toString("hex"),
+        sender: assetBenchProducer.account.address,
       }),
-      OPTIONS: JSON.stringify(opts)
+      OPTIONS: JSON.stringify(opts),
     });
 
     worker.on("exit", () => console.log("worker done"));
-    worker.on("error", err => console.log("worker error", err));
+    worker.on("error", (err) => console.log("worker error", err));
 
     return worker;
   });

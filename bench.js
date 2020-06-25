@@ -26,14 +26,19 @@ async function runMain(assetBenchProducer, workers, options) {
         ...options,
         setupClient(client) {
           client.setBody(getBody());
-        }
+        },
       },
       finishedBench
     );
 
     autocannon.track(instance);
 
-    instance.on("response", function(client, statusCode, returnBytes, responseTime) {
+    instance.on("response", function (
+      client,
+      statusCode,
+      returnBytes,
+      responseTime
+    ) {
       const res = client.parser.chunk.toString();
       const isError = res.includes("error");
       if (isError) {
@@ -43,12 +48,16 @@ async function runMain(assetBenchProducer, workers, options) {
       client.setBody(getBody());
     });
 
-    instance.on("done", async function({ start, duration }) {
+    instance.on("done", async function ({ start, duration }) {
       for (const worker of workers) {
         worker.process.kill();
       }
       const spin = ora("TPS is calculating ").start();
-      const { blockUsage, transferProcessed, blocks } = await assetBenchProducer.end();
+      const {
+        blockUsage,
+        transferProcessed,
+        blocks,
+      } = await assetBenchProducer.end();
       spin.stop();
 
       const txCount = transferProcessed;
@@ -56,7 +65,12 @@ async function runMain(assetBenchProducer, workers, options) {
 
       const balanceTable = new Table({ head: ["", "balance", "block height"] });
       balanceTable.push(
-        { init: [assetBenchProducer.startBalance, assetBenchProducer.startBlock] },
+        {
+          init: [
+            assetBenchProducer.startBalance,
+            assetBenchProducer.startBlock,
+          ],
+        },
         { done: [assetBenchProducer.endBalance, assetBenchProducer.endBlock] }
       );
 
@@ -64,7 +78,9 @@ async function runMain(assetBenchProducer, workers, options) {
       Object.entries(blocks)
         .sort((l, r) => Number(l[0]) - Number(r[0]))
         .forEach(([id, info]) => {
-          console.log(`${id} \t\t\t ${info.transactionsCount} \t\t\t ${info.round}`);
+          console.log(
+            `${id} \t\t\t ${info.transactionsCount} \t\t\t ${info.round}`
+          );
         });
 
       console.log("TPS:");
@@ -79,12 +95,16 @@ async function runMain(assetBenchProducer, workers, options) {
           blocks: [],
           tx_block: round(txCount / blockCount),
           sec_block: round(duration / blockCount),
-          tx_sec: round(txCount / duration)
+          tx_sec: round(txCount / duration),
         };
         Object.entries(blocks)
           .sort((l, r) => Number(l[0]) - Number(r[0]))
           .forEach(([id, info]) => {
-            benchDetail.blocks.push([parseInt(id), info.transactionsCount, info.round]);
+            benchDetail.blocks.push([
+              parseInt(id),
+              info.transactionsCount,
+              info.round,
+            ]);
           });
         console.log(JSON.stringify(benchDetail));
       }
@@ -103,7 +123,11 @@ function runWorker() {
   const workerData = JSON.parse(process.env.WORKER_DATA);
   const options = JSON.parse(process.env.OPTIONS);
 
-  const payload = JSON.stringify({ asset_id: workerData.assetId, to: workerData.to, value: 1 });
+  const payload = JSON.stringify({
+    asset_id: workerData.assetId,
+    to: workerData.to,
+    value: 1,
+  });
 
   function getBody() {
     const variables = utils.signTransaction(
@@ -115,14 +139,15 @@ function runWorker() {
         nonce: `0x${randomBytes(32).toString("hex")}`,
         chainId: `${workerData.chainId}`,
         cyclesPrice: "0x01",
-        cyclesLimit: "0x5208"
+        cyclesLimit: "0x5208",
+        sender: workerData.sender,
       },
       Buffer.from(workerData.privateKey, "hex")
     );
 
     const tx = JSON.stringify({
       query,
-      variables
+      variables,
     });
 
     return tx;
@@ -133,14 +158,19 @@ function runWorker() {
       ...options,
       setupClient(client) {
         client.setBody(getBody());
-      }
+      },
     },
     finishedBench
   );
 
   autocannon.track(instance);
 
-  instance.on("response", function(client, statusCode, returnBytes, responseTime) {
+  instance.on("response", function (
+    client,
+    statusCode,
+    returnBytes,
+    responseTime
+  ) {
     const res = client.parser.chunk.toString();
     const isError = res.includes("error");
     if (isError) {
