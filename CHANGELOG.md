@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.8...v0.1.9) (2020-06-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* update to compatible with nervosnetwork/muta#320
+
+### Features
+
+* update to compatible with nervosnetwork/muta[#320](https://github.com/nervosnetwork/muta-benchmark/issues/320) ([c1fa8dd](https://github.com/nervosnetwork/muta-benchmark/commit/c1fa8ddf3d22da49cdb6a959586b9eab85b7efb7))
+
 ### [0.1.8](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.7...v0.1.8) (2020-06-22)
 
 
