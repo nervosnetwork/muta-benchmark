@@ -2,7 +2,7 @@ const autocannon = require("@homura/autocannon");
 const ora = require("ora");
 const Table = require("cli-table3");
 const logger = require("./logger");
-const { utils } = require("muta-sdk");
+const { utils } = require("@mutadev/muta-sdk");
 const randomBytes = require("randombytes");
 
 function round(x) {
