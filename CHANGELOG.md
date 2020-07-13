@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.9...v0.1.10) (2020-07-13)
+
+
+### Features
+
+* update sdk version ([04b1988](https://github.com/nervosnetwork/muta-benchmark/commit/04b1988721766c1f971e0ac8cda00fbc0be36e09))
+
 ### [0.1.9](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.8...v0.1.9) (2020-06-25)
 
 
