@@ -1,6 +1,6 @@
 {
   "name": "muta-bench",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Muta benchmark",
   "main": "index.js",
   "publishConfig": {
