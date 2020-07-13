@@ -3,7 +3,7 @@
 const program = require("commander");
 const ora = require("ora");
 const cluster = require("cluster");
-const { utils } = require("muta-sdk");
+const { utils } = require("@mutadev/muta-sdk");
 const { runMain, runWorker } = require("./bench");
 const logger = require("./logger");
 const { AssetBenchProducer } = require("./BenchProducer");
