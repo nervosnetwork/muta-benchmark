@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11-pr374.0](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.10...v0.1.11-pr374.0) (2020-07-27)
+
+
+### Features
+
+* update to fit to bech32 address ([13fda98](https://github.com/nervosnetwork/muta-benchmark/commit/13fda98d62485a5c34a6042d583c262ad4f3b62c))
+
 ### [0.1.10](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.9...v0.1.10) (2020-07-13)
 
 
