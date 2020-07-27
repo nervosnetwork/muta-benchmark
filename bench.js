@@ -130,7 +130,7 @@ function runWorker() {
   });
 
   function getBody() {
-    const variables = utils.signTransaction(
+    const signed = utils.signTransaction(
       {
         serviceName: "asset",
         method: "transfer",
@@ -144,6 +144,11 @@ function runWorker() {
       },
       Buffer.from(workerData.privateKey, "hex")
     );
+
+    const variables = {
+      inputRaw: utils.separateOutRawTransaction(signed),
+      inputEncryption: utils.separateOutEncryption(signed),
+    };
 
     const tx = JSON.stringify({
       query,

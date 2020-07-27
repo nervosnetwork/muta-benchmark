@@ -24,14 +24,11 @@ class AssetBench {
     this.client = muta.client();
     this.account = Muta.accountFromPrivateKey(pk);
     this.rawClient = this.client.getRawClient();
-    this.service = new AssetService(
-      this.client,
-      this.account,
-    );
+    this.service = new AssetService(this.client, this.account);
 
     this.chainId = chainId;
 
-    this.to = '0x' + randomBytes(20).toString('hex');
+    this.to = Muta.accountFromPrivateKey(randomBytes(32)).address;
     this.receiver = receiver;
     this.gap = gap;
   }
@@ -106,7 +103,7 @@ class AssetBench {
     const assetId = this.assetId;
     const to = this.to;
 
-    const variables = utils.signTransaction(
+    const signed = utils.signTransaction(
       {
         serviceName: 'asset',
         method: 'transfer',
@@ -120,6 +117,11 @@ class AssetBench {
       },
       this.account._privateKey
     );
+
+    const variables = {
+      inputRaw: utils.separateOutRawTransaction(signed),
+      inputEncryption: utils.separateOutEncryption(signed),
+    };
 
     return JSON.stringify({
       query,
