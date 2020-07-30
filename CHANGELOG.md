@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.11-pr374.0...v0.1.11) (2020-07-30)
+
 ### [0.1.11-pr374.0](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.10...v0.1.11-pr374.0) (2020-07-27)
 
 
