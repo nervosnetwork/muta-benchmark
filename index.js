@@ -48,7 +48,7 @@ const { args } = program
   .option('--json', 'print output as json', false)
   .name('muta-bench')
   .usage(
-    '-m POST -d 60 -c 20 --gap 30 --receiver 0x1000000000000000000000000000000000000000 --pk 0x45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f http://127.0.0.1:8000/graphql'
+    '-m POST -d 60 -c 20 --gap 30 --pk 0x45c56be699dca666191ad3446897e0f480da234da896270202514a0e1a587c3f http://127.0.0.1:8000/graphql'
   )
   .parse(process.argv);
 
