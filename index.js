@@ -102,7 +102,7 @@ async function run() {
         to: assetBenchProducer.to,
         timeout: assetBenchProducer.timeout,
         chainId: assetBenchProducer.chainId,
-        privateKey: assetBenchProducer.account._privateKey.toString('hex'),
+        privateKey: utils.rm0x(utils.toHex(assetBenchProducer.privateKey)),
         sender: assetBenchProducer.account.address,
       }),
       OPTIONS: JSON.stringify(opts),

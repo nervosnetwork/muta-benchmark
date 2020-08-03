@@ -20,8 +20,8 @@ class AssetBench {
       timeoutGap: gap,
       endpoint: Array.isArray(url) ? url[0] : url,
     });
-
     this.client = muta.client();
+    this.privateKey = pk;
     this.account = Muta.accountFromPrivateKey(pk);
     this.rawClient = this.client.getRawClient();
     this.service = new AssetService(this.client, this.account);
@@ -115,7 +115,7 @@ class AssetBench {
         cyclesLimit: '0x5208',
         sender: this.account.address,
       },
-      this.account._privateKey
+      utils.toBuffer(this.privateKey)
     );
 
     const variables = {
