@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.4...v0.2.0) (2020-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* update to compatible with nervosnetwork/muta#320
+
+### Features
+
+* support multiple signatures with  nervosnetwork/muta[#318](https://github.com/nervosnetwork/muta-benchmark/issues/318) ([b4d4473](https://github.com/nervosnetwork/muta-benchmark/commit/b4d4473d1bf7f8fb986f0dcb418079289d890a51))
+* supported bench with multiple url ([4e6c444](https://github.com/nervosnetwork/muta-benchmark/commit/4e6c4448bdfe84fc9fc1031fb9b2789ac0a7da81))
+* update muta-sdk version to fit prevHash ([6df841a](https://github.com/nervosnetwork/muta-benchmark/commit/6df841a84fee47521839d1a37b4d5554c03d09ba))
+* update sdk to 0.10 ([265bc2a](https://github.com/nervosnetwork/muta-benchmark/commit/265bc2a5af9e2dd63fe8ade4efd5a3e64070007f))
+* update sdk to 0.2.0-alpha.1 ([0de7039](https://github.com/nervosnetwork/muta-benchmark/commit/0de7039259d26c296b2d3b7b70b238c9fb5b98a0))
+* update sdk version ([0563fee](https://github.com/nervosnetwork/muta-benchmark/commit/0563feee02b5e2c6cb4334d0caeefedbdcfb233a))
+* update to compatible with nervosnetwork/muta[#320](https://github.com/nervosnetwork/muta-benchmark/issues/320) ([9f14a6c](https://github.com/nervosnetwork/muta-benchmark/commit/9f14a6c7743ad178b159237668f1f365c5515d82))
+* update to fit to bech32 address ([bd976d0](https://github.com/nervosnetwork/muta-benchmark/commit/bd976d088f8973fec0d923ce96db9582fcceb46f))
+
 ### [0.1.12](https://github.com/nervosnetwork/muta-benchmark/compare/v0.1.11...v0.1.12) (2020-08-03)
 
 
