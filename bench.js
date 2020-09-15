@@ -1,9 +1,9 @@
-const autocannon = require("@homura/autocannon");
-const ora = require("ora");
-const Table = require("cli-table3");
-const logger = require("./logger");
-const { utils } = require("@mutadev/muta-sdk");
-const randomBytes = require("randombytes");
+const autocannon = require('@homura/autocannon');
+const ora = require('ora');
+const Table = require('cli-table3');
+const logger = require('./logger');
+const { utils } = require('@mutadev/muta-sdk');
+const randomBytes = require('randombytes');
 
 function round(x) {
   return parseFloat(Math.round(x * 100) / 100).toFixed(2);
@@ -33,14 +33,14 @@ async function runMain(assetBenchProducer, workers, options) {
 
     autocannon.track(instance);
 
-    instance.on("response", function (
+    instance.on('response', function (
       client,
       statusCode,
       returnBytes,
       responseTime
     ) {
       const res = client.parser.chunk.toString();
-      const isError = res.includes("error");
+      const isError = res.includes('error');
       if (isError) {
         logger.error(res);
         errorCount++;
@@ -48,11 +48,11 @@ async function runMain(assetBenchProducer, workers, options) {
       client.setBody(getBody());
     });
 
-    instance.on("done", async function ({ start, duration }) {
+    instance.on('done', async function ({ start, duration }) {
       for (const worker of workers) {
         worker.process.kill();
       }
-      const spin = ora("TPS is calculating ").start();
+      const spin = ora('TPS is calculating ').start();
       const {
         blockUsage,
         transferProcessed,
@@ -63,7 +63,7 @@ async function runMain(assetBenchProducer, workers, options) {
       const txCount = transferProcessed;
       const blockCount = blockUsage;
 
-      const balanceTable = new Table({ head: ["", "balance", "block height"] });
+      const balanceTable = new Table({ head: ['', 'balance', 'block height'] });
       balanceTable.push(
         {
           init: [
@@ -74,7 +74,7 @@ async function runMain(assetBenchProducer, workers, options) {
         { done: [assetBenchProducer.endBalance, assetBenchProducer.endBlock] }
       );
 
-      console.log("block_id \t\t count \t\t\t round");
+      console.log('block_id \t\t count \t\t\t round');
       Object.entries(blocks)
         .sort((l, r) => Number(l[0]) - Number(r[0]))
         .forEach(([id, info]) => {
@@ -83,7 +83,7 @@ async function runMain(assetBenchProducer, workers, options) {
           );
         });
 
-      console.log("TPS:");
+      console.log('TPS:');
       console.log(balanceTable.toString());
 
       console.log(`${round(txCount / blockCount)} tx/block`);
@@ -132,17 +132,17 @@ function runWorker() {
   function getBody() {
     const signed = utils.signTransaction(
       {
-        serviceName: "asset",
-        method: "transfer",
+        serviceName: 'asset',
+        method: 'transfer',
         payload,
         timeout: workerData.timeout,
-        nonce: `0x${randomBytes(32).toString("hex")}`,
+        nonce: `0x${randomBytes(32).toString('hex')}`,
         chainId: `${workerData.chainId}`,
-        cyclesPrice: "0x01",
-        cyclesLimit: "0x5208",
+        cyclesPrice: '0x01',
+        cyclesLimit: '0x5208',
         sender: workerData.sender,
       },
-      Buffer.from(workerData.privateKey, "hex")
+      Buffer.from(workerData.privateKey, 'hex')
     );
 
     const variables = {
@@ -170,14 +170,14 @@ function runWorker() {
 
   autocannon.track(instance);
 
-  instance.on("response", function (
+  instance.on('response', function (
     client,
     statusCode,
     returnBytes,
     responseTime
   ) {
     const res = client.parser.chunk.toString();
-    const isError = res.includes("error");
+    const isError = res.includes('error');
     if (isError) {
       logger.error(res);
       errorCount++;

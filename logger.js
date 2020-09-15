@@ -1,8 +1,8 @@
-const debug = require("debug");
+const debug = require('debug');
 
 module.exports = {
-  error: debug("error"),
+  error: debug('error'),
   enable(enable) {
     debug.enable(enable);
-  }
+  },
 };
